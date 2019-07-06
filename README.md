@@ -14,3 +14,6 @@ Include this json template in "/etc/weewx/skins/Standard/skin.conf" after the RS
         [[[json]]]
             template = current.json.tmpl
 
+
+The DzVents event script "weewx" is created on the machine running Domoticz.
+This script gets weather data from WeeWX by fetching the file "weewx/current.json" from the machine running WeeWX.
