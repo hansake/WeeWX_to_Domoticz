@@ -1,0 +1,66 @@
+-- dzVents script: "weewx.lua" to fetch weather data from WeeWX and present it in Domoticz
+--
+-- dzVents Version: 2.4 or higher is needed
+--
+-- Virtual sensors must be created in Domotics
+--  Setup > Hardware, Add: "Dummy (Does nothing, use for virtual switches only)", 
+--    name the virtual hardware is here "WeeWX". Created once for WeeWX weather station.
+--  Setup > Hardware > for created virtual hardware > Create Virtual Sensors, 
+--    three sensors should be created, this dzVents script assumes that are named:
+--      name: "Väder", Sensor Type: "Temp+Hum+Baro"
+--      name: "Vind", Sensor Type: "Wind"
+--      name: "Regn", Sensor Type: "Rain"
+--
+
+local DEBUGPRT = false -- true if debug print to log, else false
+
+return {
+    on = {
+        timer = {"every 5 minutes"},
+        httpResponses = {"statusTrigger"}
+    },
+    execute = function(domoticz, item)
+        local temp_hum_baro = domoticz.devices("Väder")
+        local wind = domoticz.devices("Vind")
+        local rain = domoticz.devices("Regn")
+        if (item.isTimer) then
+            -- Send a status request
+            domoticz.openURL({
+                url = "http://192.168.1.125/weewx/current.json",
+                method = "GET",
+                callback = "statusTrigger"
+            })
+        end
+        if (item.isHTTPResponse and item.ok and item.isJSON) then
+            if (item.trigger == "statusTrigger" and item.json.stats ~= nil) then
+                if (DEBUGPRT == true) then
+                    print(string.format("WeeWX %s", item.json.time))
+                    print(string.format("outTemp: %s", item.json.stats.current.outTemp))
+                    print(string.format("windchill: %s", item.json.stats.current.windchill))
+                    print(string.format("heatIndex: %s", item.json.stats.current.heatIndex))
+                    print(string.format("dewpoint: %s", item.json.stats.current.dewpoint))
+                    print(string.format("humidity: %s", item.json.stats.current.humidity))
+                    print(string.format("barometer: %s", item.json.stats.current.barometer))
+                    print(string.format("windSpeed: %s", item.json.stats.current.windSpeed))
+                    print(string.format("windDir: %s", item.json.stats.current.windDir))
+                    print(string.format("windDirText: %s", item.json.stats.current.windDirText))
+                    print(string.format("windGust: %s", item.json.stats.current.windGust))
+                    print(string.format("windGustDir: %s", item.json.stats.current.windGustDir))
+                    print(string.format("rainRate: %s", item.json.stats.current.rainRate))
+                    print(string.format("rainSum: %s", item.json.stats.sinceMidnight.rainSum))
+                end
+                temp_hum_baro.updateTempHumBaro(item.json.stats.current.outTemp,
+                    item.json.stats.current.humidity, domoticz.HUM_NORMAL,
+                    item.json.stats.current.barometer, domoticz.BARO_NOINFO)
+                wind.updateWind(item.json.stats.current.windDir,
+                    item.json.stats.current.windDirText,
+                    item.json.stats.current.windSpeed,
+                    item.json.stats.current.windGust,
+                    item.json.stats.current.outTemp,
+                    item.json.stats.current.windchill)
+                rain.updateRain(item.json.stats.current.rainRate * 100,
+                    item.json.stats.sinceMidnight.rainSum)
+            end
+        end
+    end
+}
