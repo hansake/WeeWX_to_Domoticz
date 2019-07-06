@@ -1,0 +1,24 @@
+#encoding UTF-8
+{
+  "time":"$current.dateTime",
+  "stats": {
+    "current": {
+      "outTemp":"$current.outTemp.format(add_label=False)",
+      "windchill":"$current.windchill.format(add_label=False)",
+      "heatIndex":"$current.heatindex.format(add_label=False)",
+      "dewpoint":"$current.dewpoint.format(add_label=False)",
+      "humidity":"$current.outHumidity.format(add_label=False)",
+      "barometer":"$current.barometer.format(add_label=False)",
+      "windSpeed":"$current.windSpeed.format(add_label=False)",
+      "windDir":"$current.windDir.format(add_label=False)",
+      "windDirText":"$current.windDir.ordinal_compass",
+      "windGust":"$current.windGust.format(add_label=False)",
+      "windGustDir":"$current.windGustDir.format(add_label=False)",
+      "rainRate":"$current.rainRate.format(add_label=False)",
+      "rxCheckPercent":"$current.rxCheckPercent.format(add_label=False)"
+    },
+    "sinceMidnight": {
+      "rainSum":"$day.rain.sum.format(add_label=False)"
+    }
+  }
+}
