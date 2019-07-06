@@ -17,3 +17,12 @@ Include this json template in "/etc/weewx/skins/Standard/skin.conf" after the RS
 
 The DzVents event script "weewx" is created on the machine running Domoticz.
 This script gets weather data from WeeWX by fetching the file "weewx/current.json" from the machine running WeeWX.
+
+Virtual sensors must be created in Domotics
+*  Setup > Hardware, Add: "Dummy (Does nothing, use for virtual switches only)", 
+*    name the virtual hardware is here "WeeWX". Created once for WeeWX weather station.
+*  Setup > Hardware > for created virtual hardware > Create Virtual Sensors, 
+*    three sensors should be created, this dzVents script assumes that are named:
+*      name: "Väder", Sensor Type: "Temp+Hum+Baro"
+*      name: "Vind", Sensor Type: "Wind"
+*      name: "Regn", Sensor Type: "Rain"
