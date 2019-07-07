@@ -49,8 +49,17 @@ return {
                     print(string.format("rainRate: %s", item.json.stats.current.rainRate))
                     print(string.format("rainSum: %s", item.json.stats.sinceMidnight.rainSum))
                 end
+                local dp = tonumber(item.json.stats.current.dewpoint)
+                local hum_stat = domoticz.HUM_NORMAL
+                if (dp > 20) then
+                    hum_stat = domoticz.HUM_WET
+                elseif (dp > 10) then
+                    hum_stat = domoticz.HUM_COMFORTABLE
+                else
+                    hum_stat = domoticz.HUM_DRY
+                end
                 temp_hum_baro.updateTempHumBaro(item.json.stats.current.outTemp,
-                    item.json.stats.current.humidity, domoticz.HUM_NORMAL,
+                    item.json.stats.current.humidity, hum_stat,
                     item.json.stats.current.barometer, domoticz.BARO_NOINFO)
                 wind.updateWind(item.json.stats.current.windDir,
                     item.json.stats.current.windDirText,
