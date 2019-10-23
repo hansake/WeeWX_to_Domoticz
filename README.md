@@ -24,6 +24,6 @@ Virtual sensors must also be created in Domotics
 *    name the virtual hardware is here "WeeWX". Created once for WeeWX weather station.
 *  Setup > Hardware > for created virtual hardware > Create Virtual Sensors, 
 *    three sensors should be created, this dzVents script assumes that are named:
-*      name: "Väderstation", Sensor Type: "Temp+Hum+Baro"
-*      name: "Vind", Sensor Type: "Wind"
-*      name: "Regn", Sensor Type: "Rain"
+*    name: "Väderstation", Sensor Type: "Temp+Hum+Baro"
+*    name: "Vind", Sensor Type: "Wind"
+*    name: "Regn", Sensor Type: "Rain"
