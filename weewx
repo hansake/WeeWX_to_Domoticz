@@ -6,8 +6,8 @@
 --  Setup > Hardware, Add: "Dummy (Does nothing, use for virtual switches only)", 
 --    name the virtual hardware is here "WeeWX". Created once for WeeWX weather station.
 --  Setup > Hardware > for created virtual hardware > Create Virtual Sensors, 
---    three sensors should be created, this dzVents script assumes that are named:
---      name: "Väder", Sensor Type: "Temp+Hum+Baro"
+--    three sensors should be created, this dzVents script assumes that they are named:
+--      name: "Väderstation", Sensor Type: "Temp+Hum+Baro"
 --      name: "Vind", Sensor Type: "Wind"
 --      name: "Regn", Sensor Type: "Rain"
 --
@@ -20,7 +20,7 @@ return {
         httpResponses = {"statusTrigger"}
     },
     execute = function(domoticz, item)
-        local temp_hum_baro = domoticz.devices("Väder")
+        local temp_hum_baro = domoticz.devices("Väderstation")
         local wind = domoticz.devices("Vind")
         local rain = domoticz.devices("Regn")
         if (item.isTimer) then
